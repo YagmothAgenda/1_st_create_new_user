@@ -1,0 +1,67 @@
+#!/bin/sh
+
+#1 - имя пользователя
+#2 - Комментарий
+#3 - Пароль
+#4 - Домашний каталог
+#5 - Группа пользователя
+
+if [ -z $1 ]
+ then
+  echo "Введите имя пользовтеля."
+  read name
+ else
+ name=$1
+fi
+
+if [ -z "$2" ]
+ then
+  echo "Введите комментарий к пользователю"
+  read comment
+ else
+  comment="$2"
+fi
+ 
+if [ -z $3 ]
+ then
+  echo "Введите пароль."
+  read pass
+ else
+  pass=$3
+fi
+
+if [ -z $4 ]
+ then
+  echo "Введите домашний каталог (по умолчанию /home)"
+   read home
+ else
+  home=$4
+fi
+  
+if [ -z $5 ]
+ then
+  echo "Введите группу пользовтеля"
+  read group
+ else
+  group=$5
+fi
+  
+echo "Создать пользовтеля $name с коментарием $comment \b, паролем $pass \b, домашняя директория $home \b, г
+read item
+ case "$item" in
+   y|Y)
+  ;;
+   n|N) echo "Программа будет закрыта"
+   exit 0
+  ;;
+   *)
+   echo "Вы ввели не верныйпараметр, программа будет закрыта!"
+  ;;
+ esac
+useradd -s /bin/bash -G $group -d $home -m -c "$comment" $name > /dev/null #Создание пользователя
+ 
+echo "Пользователь $name создан\n"
+ 
+echo "$pass\n$pass\n" | passwd $name #Вводит пароль.
+ 
+echo "Пароль к пользователю $name применен"
